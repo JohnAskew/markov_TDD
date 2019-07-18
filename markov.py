@@ -1,3 +1,4 @@
+#!/usr/bin/env python
 ''' This is a docstring for the markov module
 '''
 import random
@@ -72,19 +73,18 @@ def repl(m):
 
 def main(args):
     ap = argparse.ArgumentParser()
-    ap.add_arguement('-f', '--file', help = 'File to load')
-    ap.add_arguement('-s', '--size', help = 'Size (default 1)',
+    ap.add_argument('-f', '--file', help = 'File to load')
+    ap.add_argument('-s', '--size', help = 'Size (default 1)',
                      default = 1, type = int)
     opt = ap.parse_args(args)
     if opt.file:
         m = from_file(opt.file, size= opt.size)
         repl(m)
-                     
-
-        
+            
 if __name__ == '__main__':
     print(f"executing markov as {__name__}")
-    m = from_file('pp.txt', size=4)
+    #m = from_file('pp.txt', size=4)
     #repl(m)
+    main(sys.argv[1:])
 else:
     print(f"loading markov as {__name__}")
