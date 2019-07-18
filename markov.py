@@ -1,6 +1,9 @@
 ''' This is a docstring for the markov module
 '''
 import random
+import sys, argparse
+import urllib.request as req
+
 class Markov:
     def __init__(self, text, size = 1):
         #self.table = get_table(text)
@@ -49,9 +52,39 @@ def from_file(fname, size = 1):
     fin = open(fname, encoding = 'utf8')
     m = Markov(fin.read(), size = size)
     return m
+
+def repl(m):
+    print("welcome to the repl")
+    while True:
+        try:
+            txt = input('>')
+        except KeyboardInterrupt:
+            print("Goodbye")
+            break
+        try:
+            res = m.predict(txt)
+        except KeyError:
+            print("Not found try again")
+        except IndexError:
+            print("Too long try again")
+        else:
+            print(res)
+
+def main(args):
+    ap = argparse.ArgumentParser()
+    ap.add_arguement('-f', '--file', help = 'File to load')
+    ap.add_arguement('-s', '--size', help = 'Size (default 1)',
+                     default = 1, type = int)
+    opt = ap.parse_args(args)
+    if opt.file:
+        m = from_file(opt.file, size= opt.size)
+        repl(m)
+                     
+
         
 if __name__ == '__main__':
     print(f"executing markov as {__name__}")
     m = from_file('pp.txt', size=4)
+    #repl(m)
 else:
     print(f"loading markov as {__name__}")
